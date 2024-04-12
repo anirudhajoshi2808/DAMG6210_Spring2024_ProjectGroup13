@@ -229,6 +229,9 @@ BEGIN
     RETURN @likeliness;
 END
 
+ALTER TABLE Track_Features
+ADD likeliness AS dbo.GetLikenessPercentage(trackName);
+
 -- ENCRYPTION
 
 ALTER TABLE UserTable 
