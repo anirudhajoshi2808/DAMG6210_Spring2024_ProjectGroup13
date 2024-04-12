@@ -11,7 +11,7 @@ BEGIN
     ORDER BY COUNT(tg.track_id) DESC
 END
 
-EXEC sp_GetTopGenres @top_count = 80;
+EXEC sp_GetTopGenres @top_count = 5;
 
 -- STORED PROCEDURE-2
 
@@ -39,7 +39,7 @@ BEGIN
     SELECT @message AS message
 END
 
-EXEC sp_CreatePlaylist @user_id = '9', @playlist_name = 'Devotional';
+EXEC sp_CreatePlaylist @user_id = '4', @playlist_name = 'Bollywood';
 
 -- STORED PROCEDURE-3
 
@@ -84,6 +84,8 @@ JOIN dbo.TracksToPlaylist tp ON t.track_id = tp.track_id
 JOIN dbo.Playlist p ON tp.playlist_id = p.playlist_id
 GROUP BY  g.genre_name;
 
+SELECT * FROM View_TopArtistsGenres;
+
 -- VIEW-2
 CREATE VIEW [dbo].[View_UserEngagement] AS
 SELECT 
@@ -101,6 +103,8 @@ INNER JOIN
 GROUP BY 
     g.genre_name;
 
+SELECT * FROM View_UserEngagement;
+
 -- VIEW-3
 CREATE VIEW [dbo].[View_MusicLibraryOverview] AS
 SELECT 'TotalTracks' AS Metric, COUNT(*) AS Value FROM dbo.Track
@@ -109,10 +113,14 @@ SELECT 'TotalAlbums' AS Metric, COUNT(*) AS Value FROM dbo.Album
 UNION ALL
 SELECT 'TotalArtists' AS Metric, COUNT(*) AS Value FROM dbo.Artist;
 
+SELECT * FROM View_MusicLibraryOverview
+
 -- VIEW-4
 CREATE VIEW [dbo].[View_PlaylistPopularity] AS
 SELECT playlist_name, playlist_follows
 FROM dbo.Playlist where playlist_follows > 0;
+
+SELECT * FROM View_PlaylistPopularity;
 
 -- VIEW-5
 CREATE VIEW [dbo].[View_TrackFeaturesAnalysis] AS
@@ -123,6 +131,8 @@ JOIN dbo.TrackToGenre ttg ON t.track_id = ttg.track_id
 JOIN dbo.Genre g ON ttg.genre_id = g.genre_id
 GROUP BY g.genre_name;
 
+SELECT * FROM View_TrackFeaturesAnalysis;
+
 -- VIEW-6
 CREATE VIEW [dbo].[View_AlbumReleasesOverTime] AS
 SELECT 
@@ -131,12 +141,16 @@ SELECT
 FROM dbo.Album a
 GROUP BY FLOOR(YEAR(a.album_release_date) / 10) * 10;
 
+SELECT * FROM View_AlbumReleasesOverTime;
+
 -- VIEW-7
 CREATE VIEW [dbo].[View_ChartPositions] AS
 SELECT distinct t.trackName, sum(tc.chart_position) as chart_position
 FROM dbo.TracksToChart tc
 JOIN dbo.Track t ON tc.track_id = t.track_id
 group by t.trackName;
+
+SELECT * FROM View_ChartPositions
 
 -- VIEW-8
 CREATE VIEW [dbo].[View_CorrelationAnalysis] AS
@@ -145,6 +159,8 @@ FROM dbo.Track_Features tf
 JOIN dbo.Track t on t.track_id = tf.track_id
 JOIN dbo.User_Interaction ui ON tf.track_id = ui.track_id
 GROUP BY tf.danceability_percent, t.trackName;
+
+SELECT * FROM View_CorrelationAnalysis;
 
 
 -- TRIGGER
@@ -209,6 +225,7 @@ GO
 ALTER TABLE [dbo].[Track_Features] CHECK CONSTRAINT [CHK_ValidPercentages]
 
 -- UDF
+Select * from Track;
 
 CREATE FUNCTION [dbo].[GetLikenessPercentage] (@trackName NVARCHAR(255))
 RETURNS FLOAT
@@ -225,14 +242,16 @@ BEGIN
                           AVG(speechiness_percent)) / 7.0
     FROM dbo.Track_Features
     WHERE track_id IN (SELECT track_id FROM dbo.Track WHERE trackName = @trackName);
-
     RETURN @likeliness;
 END
 
-ALTER TABLE Track_Features
+ALTER TABLE Track
 ADD likeliness AS dbo.GetLikenessPercentage(trackName);
 
+Select * from Track;
+
 -- ENCRYPTION
+SELECT * FROM UserTable;
 
 ALTER TABLE UserTable 
 ADD EncryptedContactNo varbinary(256), 

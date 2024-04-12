@@ -32,7 +32,7 @@ INSERT INTO Track (track_id, album_id, trackName, release_date) VALUES ('1006', 
 INSERT INTO Track (track_id, album_id, trackName, release_date) VALUES ('1007', '104', N'Hello', '2015-11-20');
 INSERT INTO Track (track_id, album_id, trackName, release_date) VALUES ('1008', '104', N'When We Were Young', '2015-11-20');
 INSERT INTO Track (track_id, album_id, trackName, release_date) VALUES ('1009', '105', N'Stairway To Heaven', '1971-11-08');
-INSERT INTO Track (track_id, album_id, trackName, release_date) VALUES ('1010', '105', N'Black Dog');
+INSERT INTO Track (track_id, album_id, trackName, release_date) VALUES ('1010', '105', N'Black Dog', '1975-01-01');
 
 -- Insert into Track_Features Table
 INSERT INTO Track_Features (track_id, bpm, keynote, mode, danceability_percent, valence_percent, energy_percent, acousticness_percent, instrumentalness_percent, liveness_percent, speechiness_percent) 
@@ -147,6 +147,8 @@ INSERT INTO UserTable (user_id, first_name, last_name, contact_no, email_id)
 VALUES (10, 'Nikita', 'Gupta', '+1 (404) 555-5790', 'nikita.gupta@example.com');
 
 -- Insert into User_Interaction Table
+SET IDENTITY_INSERT User_Interaction ON;
+
 INSERT INTO User_Interaction (interaction_ID, user_id, track_id, play_count, like_flag)
 VALUES (1, 1, 1001, 2, 1);
 INSERT INTO User_Interaction (interaction_ID, user_id, track_id, play_count, like_flag)
@@ -167,8 +169,10 @@ INSERT INTO User_Interaction (interaction_ID, user_id, track_id, play_count, lik
 VALUES (9, 9, 1009, 3, 1);
 INSERT INTO User_Interaction (interaction_ID, user_id, track_id, play_count, like_flag)
 VALUES (10, 10, 1010, 6, 0);
+SET IDENTITY_INSERT User_Interaction OFF;
 
 -- Insert into Chart Table
+SET IDENTITY_INSERT Chart ON;
 INSERT INTO Chart (chart_id, chart_name) VALUES (201, N'Billboard Top 5');
 INSERT INTO Chart (chart_id, chart_name) VALUES (202, N'Weekly Top 3');
 INSERT INTO Chart (chart_id, chart_name) VALUES (203, N'Rock');
@@ -179,6 +183,7 @@ INSERT INTO Chart (chart_id, chart_name) VALUES (207, N'Jazz Classics');
 INSERT INTO Chart (chart_id, chart_name) VALUES (208, N'Electronic Beats');
 INSERT INTO Chart (chart_id, chart_name) VALUES (209, N'Classical Music Favorites');
 INSERT INTO Chart (chart_id, chart_name) VALUES (210, N'Blues Hits');
+SET IDENTITY_INSERT Chart OFF;
 
 -- Insert into TracksToChart Table
 
@@ -236,7 +241,7 @@ INSERT INTO TracksToChart (track_id, chart_id, chart_position) VALUES ('1006', 2
 
 
 -- Insert into Playlist Table
-
+SET IDENTITY_INSERT Playlist ON;
 INSERT INTO Playlist (playlist_id, playlist_name, playlist_follows)
 VALUES (301, 'Classic Rock', 5);
 INSERT INTO Playlist (playlist_id, playlist_name, playlist_follows)
@@ -257,6 +262,7 @@ INSERT INTO Playlist (playlist_id, playlist_name, playlist_follows)
 VALUES (309, 'Regional', 0);
 INSERT INTO Playlist (playlist_id, playlist_name, playlist_follows)
 VALUES (310, 'Devotional', 0);
+SET IDENTITY_INSERT Playlist OFF;
 
 -- Insert into TractToPlaylist Table
 INSERT INTO TracksToPlaylist (track_id, playlist_id)
